@@ -3,27 +3,8 @@
 
 Commands::Commands()
 {
-	// Help command
-	Function *help = new Function();
-	help->f = &Help;
-	help->len = 0;
-	this->commands["help"] = help;
-
-	// View command
-	Function* view = new Function();
-	view->f = &View;
-	view->len = 1;
-	this->commands["view"] = view;
-}
-
-Commands::~Commands()
-{
-	for (auto const& x : this->commands)
-	{
-		delete x.second;
-	}
-
-	this->commands.clear();
+	this->commands["help"] = Function{ &Help, 0 };
+	this->commands["view"] = Function{ &View, 1 };
 }
 
 int Commands::Run(std::string cmd, std::string args[])
@@ -39,19 +20,18 @@ int Commands::Run(std::string cmd, std::string args[])
 			}
 		}
 
-		Function* f = commands[cmd];
+		Function& f = commands[cmd];
 
-		if (c < f->len)
+		if (c < f.len)
 		{
 			std::cout << "Invalid amount of parameters, please use the help command\n";
 			return 0;
 		}
 
-		f->f(args);
+		f.f(args);
 	}
 	else
 	{
-		// We do not really need an extra check here
 		Help(nullptr);
 	}
 

@@ -1,6 +1,6 @@
 #pragma once
 #include <iostream>
-#include <map>
+#include <unordered_map>
 
 template <typename T>
 using FnPtr = int(*)(T);
@@ -22,9 +22,8 @@ class Commands
 {
 public:
 	Commands();
-	~Commands();
 
 	int Run(std::string cmd, std::string[]);
 private:
-	std::map<std::string, Function*> commands;
+	std::unordered_map<std::string, Function> commands;
 };
